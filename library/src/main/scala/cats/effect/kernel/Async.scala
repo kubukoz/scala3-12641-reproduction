@@ -1,7 +1,5 @@
 package cats.effect.kernel
 
-import cats.data.WriterT
-
 trait Async2[F[_]] {}
 
 object Async2 {
@@ -17,6 +15,8 @@ object Async2 {
   trait WriterTSync[F[_], S] extends MonadCancel2.WriterTMonadCancel[F, S]
 
 }
+
+final case class WriterT[F[_], L, V](run: F[(L, V)])
 
 trait MonadError[F[_], E]
 trait MonadCancel2[F[_], E]
