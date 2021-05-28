@@ -1,6 +1,6 @@
 package cats.effect.kernel
 
-trait Async2[F[_]] {}
+trait Async2[F[_]]
 
 object Async2 {
   def apply[F[_]](implicit F: Async2[F]): F.type = F
@@ -20,6 +20,7 @@ final case class WriterT[F[_], L, V](run: F[(L, V)])
 
 trait MonadError[F[_], E]
 trait MonadCancel2[F[_], E]
+
 object MonadCancel2 {
 
   trait WriterTMonadCancel[F[_], L]
