@@ -19,8 +19,6 @@ object Async2 {
       extends Async2[WriterT[F, X, *]]
       with WriterTSync[F, X] {
 
-    implicit protected def F: Sync[F] with GenTemporal[F, Throwable] = ???
-
     override protected final def delegate = super.delegate
   }
 
@@ -36,10 +34,6 @@ object MonadCancel2 {
   private[kernel] trait WriterTMonadCancel[F[_], L, E]
       extends MonadCancel[WriterT[F, L, *], E] {
 
-    implicit protected def F: MonadCancel[F, E]
-
-    implicit protected def L: Monoid[L]
-
     protected def delegate: MonadError[WriterT[F, L, *], E] =
       ???
 
@@ -50,12 +44,10 @@ object MonadCancel2 {
 
     def canceled: WriterT[F, L, Unit] = ???
 
-    //Note that this does not preserve the log from the finalizer
     def onCancel[A](
         fa: WriterT[F, L, A],
         fin: WriterT[F, L, Unit]
-    ): WriterT[F, L, A] =
-      ???
+    ): WriterT[F, L, A] = ???
 
     def forceR[A, B](fa: WriterT[F, L, A])(
         fb: WriterT[F, L, B]
