@@ -9,12 +9,12 @@ object Async2 {
       extends Async2[({ type LL[A] = WriterT[F, L, A] })#LL]
       with MonadCancel2.WriterTMonadCancel[F, L] {
 
-    override protected final def delegate = super.delegate
+    override def delegate = super.delegate
   }
 
 }
 
-final case class WriterT[F[_], L, V]()
+case class WriterT[F[_], L, V]()
 
 trait MonadError2[F[_], E]
 trait MonadCancel2[F[_], E]
@@ -24,8 +24,7 @@ object MonadCancel2 {
   trait WriterTMonadCancel[F[_], L]
       extends MonadCancel2[({ type LL[A] = WriterT[F, L, A] })#LL, Unit] {
 
-    protected def delegate
-        : MonadError2[({ type LL[A] = WriterT[F, L, A] })#LL, Unit] =
+    def delegate: MonadError2[({ type LL[A] = WriterT[F, L, A] })#LL, Unit] =
       ???
 
   }
