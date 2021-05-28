@@ -15,18 +15,17 @@ object Async2 {
     override protected final def delegate = super.delegate
   }
 
-  trait WriterTSync[F[_], S]
-      extends MonadCancel2.WriterTMonadCancel[F, S, Throwable]
+  trait WriterTSync[F[_], S] extends MonadCancel2.WriterTMonadCancel[F, S]
 
 }
 
 trait MonadCancel2[F[_], E]
 object MonadCancel2 {
 
-  trait WriterTMonadCancel[F[_], L, E]
-      extends MonadCancel2[WriterT[F, L, *], E] {
+  trait WriterTMonadCancel[F[_], L]
+      extends MonadCancel2[WriterT[F, L, *], Unit] {
 
-    protected def delegate: MonadError[WriterT[F, L, *], E] =
+    protected def delegate: MonadError[WriterT[F, L, *], Unit] =
       ???
 
   }
