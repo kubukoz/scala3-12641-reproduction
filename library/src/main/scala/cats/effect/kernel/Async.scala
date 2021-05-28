@@ -8,6 +8,7 @@ import cats.arrow.FunctionK
 import java.util.concurrent.atomic.AtomicReference
 import scala.annotation.tailrec
 import scala.concurrent.{ExecutionContext, Future}
+import cats.MonadError
 
 trait Async2[F[_]] {}
 
@@ -24,8 +25,72 @@ object Async2 {
   }
 
   private[effect] trait WriterTSync[F[_], S]
-      extends MonadCancel.WriterTMonadCancel[F, S, Throwable] {
+      extends MonadCancel2.WriterTMonadCancel[F, S, Throwable] {
     implicit protected def F: MonadCancelThrow[F]
+  }
+
+}
+
+object MonadCancel2 {
+
+  private[kernel] trait WriterTMonadCancel[F[_], L, E]
+      extends MonadCancel[WriterT[F, L, *], E] {
+
+    implicit protected def F: MonadCancel[F, E]
+
+    implicit protected def L: Monoid[L]
+
+    protected def delegate: MonadError[WriterT[F, L, *], E] =
+      WriterT.catsDataMonadErrorForWriterT[F, L, E]
+
+    def uncancelable[A](
+        body: Poll[WriterT[F, L, *]] => WriterT[F, L, A]
+    ): WriterT[F, L, A] =
+      WriterT(
+        F.uncancelable { nat =>
+          val natT =
+            new Poll[WriterT[F, L, *]] {
+              def apply[B](optfa: WriterT[F, L, B]): WriterT[F, L, B] =
+                WriterT(nat(optfa.run))
+            }
+          body(natT).run
+        }
+      )
+
+    def canceled: WriterT[F, L, Unit] = WriterT.liftF(F.canceled)
+
+    //Note that this does not preserve the log from the finalizer
+    def onCancel[A](
+        fa: WriterT[F, L, A],
+        fin: WriterT[F, L, Unit]
+    ): WriterT[F, L, A] =
+      WriterT(F.onCancel(fa.run, fin.value.void))
+
+    def forceR[A, B](fa: WriterT[F, L, A])(
+        fb: WriterT[F, L, B]
+    ): WriterT[F, L, B] =
+      WriterT(
+        F.forceR(fa.run)(fb.run)
+      )
+
+    def pure[A](a: A): WriterT[F, L, A] = delegate.pure(a)
+
+    def raiseError[A](e: E): WriterT[F, L, A] = delegate.raiseError(e)
+
+    def handleErrorWith[A](fa: WriterT[F, L, A])(
+        f: E => WriterT[F, L, A]
+    ): WriterT[F, L, A] =
+      delegate.handleErrorWith(fa)(f)
+
+    def flatMap[A, B](fa: WriterT[F, L, A])(
+        f: A => WriterT[F, L, B]
+    ): WriterT[F, L, B] =
+      delegate.flatMap(fa)(f)
+
+    def tailRecM[A, B](a: A)(
+        f: A => WriterT[F, L, Either[A, B]]
+    ): WriterT[F, L, B] =
+      delegate.tailRecM(a)(f)
   }
 
 }
