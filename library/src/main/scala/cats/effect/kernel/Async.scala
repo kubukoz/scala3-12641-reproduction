@@ -1,6 +1,5 @@
 package cats.effect.kernel
 
-import cats.MonadError
 import cats.data.WriterT
 
 trait Async2[F[_]] {}
@@ -19,6 +18,7 @@ object Async2 {
 
 }
 
+trait MonadError[F[_], E]
 trait MonadCancel2[F[_], E]
 object MonadCancel2 {
 
