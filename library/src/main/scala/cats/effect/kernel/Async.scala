@@ -24,7 +24,7 @@ object Async2 {
 
   trait WriterTSync[F[_], S]
       extends MonadCancel2.WriterTMonadCancel[F, S, Throwable] {
-    implicit protected def F: MonadCancelThrow[F]
+    // implicit protected def F: MonadCancelThrow[F]
   }
 
 }
