@@ -1,28 +1,28 @@
 package cats.effect.kernel
 
-trait Async2[F[_]]
+trait Async[F[_]]
 
-object Async2 {
-  trait WriterTAsync[F[_], L]
-      extends Async2[({ type LL[A] = WriterT[F, L, A] })#LL]
-      with MonadCancel2.WriterTMonadCancel[F, L] {
+object Async {
+  trait WriterTAsync[F[_], L1]
+      extends Async[({ type LL[A] = WriterT[F, L1, A] })#LL]
+      with MonadCancel.WriterTMonadCancel[F, L1] {
 
     override def delegate = super.delegate
   }
 
 }
 
-case class WriterT[F[_], L, V]()
+case class WriterT[F[_], L0, V]()
 
-trait MonadError2[F[_]]
-trait MonadCancel2[F[_]]
+trait MonadError[F[_]]
+trait MonadCancel[F[_]]
 
-object MonadCancel2 {
+object MonadCancel {
 
-  trait WriterTMonadCancel[F[_], L]
-      extends MonadCancel2[({ type LL[A] = WriterT[F, L, A] })#LL] {
+  trait WriterTMonadCancel[F[_], L2]
+      extends MonadCancel[({ type LL[A] = WriterT[F, L2, A] })#LL] {
 
-    def delegate: MonadError2[({ type LL[A] = WriterT[F, L, A] })#LL] =
+    def delegate: MonadError[({ type LL[A] = WriterT[F, L2, A] })#LL] =
       ???
 
   }
