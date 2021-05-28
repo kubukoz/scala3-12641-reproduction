@@ -18,7 +18,7 @@ object Async2 {
 
 final case class WriterT[F[_], L, V](run: F[(L, V)])
 
-trait MonadError[F[_], E]
+trait MonadError2[F[_], E]
 trait MonadCancel2[F[_], E]
 
 object MonadCancel2 {
@@ -26,7 +26,7 @@ object MonadCancel2 {
   trait WriterTMonadCancel[F[_], L]
       extends MonadCancel2[WriterT[F, L, *], Unit] {
 
-    protected def delegate: MonadError[WriterT[F, L, *], Unit] =
+    protected def delegate: MonadError2[WriterT[F, L, *], Unit] =
       ???
 
   }

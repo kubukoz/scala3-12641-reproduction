@@ -4,8 +4,6 @@ lazy val library = project.settings(
   scalaVersion := "2.13.6",
   scalacOptions ++= Seq("-language:higherKinds"),
   libraryDependencies ++= Seq(
-    "org.typelevel" %% "cats-core" % "2.6.1",
-    // "org.typelevel" %% "cats-effect-kernel" % "3.1.1",
     compilerPlugin(
       "org.typelevel" % "kind-projector" % "0.13.0" cross CrossVersion.full
     )
