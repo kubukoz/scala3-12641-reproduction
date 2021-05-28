@@ -21,16 +21,10 @@ object Async2 {
     implicit protected def F: Sync[F] with GenTemporal[F, Throwable] = ???
 
     override protected final def delegate = super.delegate
-    override protected final def C = ???
-
-    override def unique: WriterT[F, X, Unique.Token] = ???
-
   }
 
   private[effect] trait WriterTSync[F[_], S]
-      extends Sync[WriterT[F, S, *]]
-      with MonadCancel.WriterTMonadCancel[F, S, Throwable]
-      with Clock.WriterTClock[F, S] {
+      extends MonadCancel.WriterTMonadCancel[F, S, Throwable] {
     implicit protected def F: MonadCancelThrow[F]
   }
 
