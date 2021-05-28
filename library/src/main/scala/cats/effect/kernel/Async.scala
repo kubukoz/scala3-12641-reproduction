@@ -1,14 +1,7 @@
 package cats.effect.kernel
 
-import cats.implicits._
-import cats.data.{EitherT, Ior, IorT, Kleisli, OptionT, WriterT}
-import cats.{~>, Monoid, Semigroup}
-
-import cats.arrow.FunctionK
-import java.util.concurrent.atomic.AtomicReference
-import scala.annotation.tailrec
-import scala.concurrent.{ExecutionContext, Future}
 import cats.MonadError
+import cats.data.WriterT
 
 trait Async2[F[_]] {}
 
