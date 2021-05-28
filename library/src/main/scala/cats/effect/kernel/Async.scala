@@ -37,21 +37,5 @@ object MonadCancel2 {
     protected def delegate: MonadError[WriterT[F, L, *], E] =
       ???
 
-    def uncancelable[A](
-        body: Poll[WriterT[F, L, *]] => WriterT[F, L, A]
-    ): WriterT[F, L, A] =
-      ???
-
-    def canceled: WriterT[F, L, Unit] = ???
-
-    def onCancel[A](
-        fa: WriterT[F, L, A],
-        fin: WriterT[F, L, Unit]
-    ): WriterT[F, L, A] = ???
-
-    def forceR[A, B](fa: WriterT[F, L, A])(
-        fb: WriterT[F, L, B]
-    ): WriterT[F, L, B] =
-      ???
   }
 }
