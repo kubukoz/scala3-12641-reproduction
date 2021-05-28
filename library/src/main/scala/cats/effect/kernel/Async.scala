@@ -14,7 +14,7 @@ object Async2 {
 
 }
 
-final case class WriterT[F[_], L, V](run: F[(L, V)])
+final case class WriterT[F[_], L, V]()
 
 trait MonadError2[F[_], E]
 trait MonadCancel2[F[_], E]
