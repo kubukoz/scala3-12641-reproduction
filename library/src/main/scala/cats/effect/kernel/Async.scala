@@ -27,10 +27,11 @@ object Async2 {
 
 }
 
+trait MonadCancel2[F[_], E]
 object MonadCancel2 {
 
   trait WriterTMonadCancel[F[_], L, E]
-      extends MonadCancel[WriterT[F, L, *], E] {
+      extends MonadCancel2[WriterT[F, L, *], E] {
 
     protected def delegate: MonadError[WriterT[F, L, *], E] =
       ???
