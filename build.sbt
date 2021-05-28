@@ -1,5 +1,17 @@
 val scala3Version = "3.0.0"
 
+lazy val library = project.settings(
+  scalaVersion := "2.13.6",
+  scalacOptions ++= Seq("-language:higherKinds"),
+  libraryDependencies ++= Seq(
+    // "org.typelevel" % "cats-core" % "2.6.1" cross CrossVersion.for3Use2_13
+    "org.typelevel" %% "cats-effect-kernel" % "3.1.1",
+    compilerPlugin(
+      "org.typelevel" % "kind-projector" % "0.13.0" cross CrossVersion.full
+    )
+  )
+)
+
 lazy val root = project
   .in(file("."))
   .settings(
@@ -10,3 +22,4 @@ lazy val root = project
     ),
     scalaVersion := scala3Version
   )
+  .dependsOn(library)
