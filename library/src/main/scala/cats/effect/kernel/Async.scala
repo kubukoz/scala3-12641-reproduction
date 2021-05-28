@@ -19,8 +19,7 @@ object Async2 {
 
   private[effect] trait WriterTAsync[F[_], X]
       extends Async2[WriterT[F, X, *]]
-      with Sync.WriterTSync[F, X]
-      with Temporal.WriterTTemporal[F, X, Throwable] {
+      with Sync.WriterTSync[F, X] {
 
     implicit protected def F: Sync[F] with GenTemporal[F, Throwable] = ???
 
