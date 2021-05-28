@@ -5,9 +5,9 @@ trait Async2[F[_]]
 object Async2 {
   def apply[F[_]](implicit F: Async2[F]): F.type = F
 
-  trait WriterTAsync[F[_], X]
-      extends Async2[WriterT[F, X, *]]
-      with WriterTSync[F, X] {
+  trait WriterTAsync[F[_], L]
+      extends Async2[({ type LL[A] = WriterT[F, L, A] })#LL]
+      with WriterTSync[F, L] {
 
     override protected final def delegate = super.delegate
   }
@@ -24,9 +24,10 @@ trait MonadCancel2[F[_], E]
 object MonadCancel2 {
 
   trait WriterTMonadCancel[F[_], L]
-      extends MonadCancel2[WriterT[F, L, *], Unit] {
+      extends MonadCancel2[({ type LL[A] = WriterT[F, L, A] })#LL, Unit] {
 
-    protected def delegate: MonadError2[WriterT[F, L, *], Unit] =
+    protected def delegate
+        : MonadError2[({ type LL[A] = WriterT[F, L, A] })#LL, Unit] =
       ???
 
   }
