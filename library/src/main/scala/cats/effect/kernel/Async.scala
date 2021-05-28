@@ -3,8 +3,6 @@ package cats.effect.kernel
 trait Async2[F[_]]
 
 object Async2 {
-  def apply[F[_]](implicit F: Async2[F]): F.type = F
-
   trait WriterTAsync[F[_], L]
       extends Async2[({ type LL[A] = WriterT[F, L, A] })#LL]
       with MonadCancel2.WriterTMonadCancel[F, L] {
