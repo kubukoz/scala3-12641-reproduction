@@ -7,12 +7,10 @@ object Async2 {
 
   trait WriterTAsync[F[_], L]
       extends Async2[({ type LL[A] = WriterT[F, L, A] })#LL]
-      with WriterTSync[F, L] {
+      with MonadCancel2.WriterTMonadCancel[F, L] {
 
     override protected final def delegate = super.delegate
   }
-
-  trait WriterTSync[F[_], S] extends MonadCancel2.WriterTMonadCancel[F, S]
 
 }
 
