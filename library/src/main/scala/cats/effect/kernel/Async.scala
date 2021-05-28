@@ -14,15 +14,15 @@ object Async2 {
 
 case class WriterT[F[_], L, V]()
 
-trait MonadError2[F[_], E]
-trait MonadCancel2[F[_], E]
+trait MonadError2[F[_]]
+trait MonadCancel2[F[_]]
 
 object MonadCancel2 {
 
   trait WriterTMonadCancel[F[_], L]
-      extends MonadCancel2[({ type LL[A] = WriterT[F, L, A] })#LL, Unit] {
+      extends MonadCancel2[({ type LL[A] = WriterT[F, L, A] })#LL] {
 
-    def delegate: MonadError2[({ type LL[A] = WriterT[F, L, A] })#LL, Unit] =
+    def delegate: MonadError2[({ type LL[A] = WriterT[F, L, A] })#LL] =
       ???
 
   }
